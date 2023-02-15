@@ -12,13 +12,13 @@ let solution = '';
 let letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
 const printBoard = () =>  {
-  for (let i = 0; i < board.length; i++) {
+  for (let i=0; i < board.length; i++) {
     console.log(board[i]);
   }
 }
 
 const generateSolution = () =>  {
-  for (let i = 0; i < 4; i++) {
+  for (let i=0; i < 4; i++) {
     const randomIndex = getRandomInt(0, letters.length);
     solution += letters[randomIndex];
   }
@@ -28,13 +28,40 @@ const getRandomInt = (min, max) => {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-const generateHint = () =>  {
-  // your code here
+const generateHint = (guess) =>  {
+  let solutionArray = solution.split('')
+  let guessArray = guess.split('')
+
+  let correctLetterLocations = 0
+  let correctLetters = 0
+  let i = 0
+
+  for(i=0; i < solutionArray.length; i++) {
+    if(solutionArray[i] === guessArray[i]) {
+      correctLetterLocations++
+      solutionArray[i] = null
+    }
+
+  }
+  for(let i=0; i < solutionArray.length; i++) {
+    let targetIndex = solutionArray.indexOf(guessArray[i])
+    if(targetIndex > -1) {
+      correctLetters++
+      solutionArray[targetIndex] = null
+    }
+  }
+  return  correctLetterLocations + "-" + correctLetters
 }
 
 const mastermind = (guess) => {
-  solution = 'abcd'; // Comment this out to generate a random solution
-  // your code here
+  solution = 'abcd'; 
+  if(solution === guess) {
+    return "You guessed it!"
+  }
+  let correctLetterLocations = 0
+  let correctLetters = 0
+  let hint = generateHint(guess)
+  board.push(`${correctLetterLocations} in the right place and ${correctLetters} correct letters in the wrong place`)
 }
 
 
